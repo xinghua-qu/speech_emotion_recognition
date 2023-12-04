@@ -9,7 +9,7 @@ from model import SpeechEmotionClassifier
 from data import RAVDESSDataset
 from utils import read_config, split_dataset  # Assuming split_dataset is a utility function you have for splitting the dataset
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+# os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
 
 
 def setup(rank, world_size):
@@ -43,7 +43,7 @@ def train_model(model, dataloader, optimizer, criterion, scaler, rank, config, e
         if rank == 0 and i % config.log_interval == 0:
             wandb.log({"loss": loss.item(), "epoch": epoch, "batch": i})
 
-def validate_model(model, dataloader, criterion, rank, config, epoch):
+def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
     """Validate the model for one epoch."""
     model.eval()
     total_loss = 0
@@ -63,8 +63,11 @@ def validate_model(model, dataloader, criterion, rank, config, epoch):
 
     avg_loss = total_loss / len(dataloader)
     accuracy = total_correct / total_samples
-    if rank == 0:
+    if rank == 0 and datatype == 'val':
         wandb.log({"val_loss": avg_loss, "val_accuracy": accuracy, "epoch": epoch})
+    elif rank == 0 and datatype == 'test':
+        wandb.log({"test_loss": avg_loss, "test_accuracy": accuracy, "epoch": epoch})
+
 
 def main(rank, world_size, config_file):
     setup(rank, world_size)
@@ -95,11 +98,10 @@ def main(rank, world_size, config_file):
 
     for epoch in range(config.epochs):
         train_model(model, train_loader, optimizer, criterion, scaler, rank, config, epoch)
-        validate_model(model, val_loader, criterion, rank, config, epoch)
+        validate_model(model, val_loader, criterion, rank, config, epoch, 'val')
 
-    test_loss, test_accuracy = validate_model(model, test_loader, criterion, rank, config, epoch)
+    validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
     if rank == 0:
-        wandb.log({"test_loss": test_loss, "val_accuracy": test_accuracy, "epoch": epoch})
         wandb.finish()
     cleanup()
 
