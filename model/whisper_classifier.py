@@ -1,69 +1,63 @@
 import torch
-import torch.nn as nn
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor
+from torch import nn
+from transformers import WhisperModel, AutoFeatureExtractor
 
-class SpeechEmotionModel(nn.Module):
-    def __init__(self, num_classes, num_transformer_layers=0, d_model=512, nhead=8, whisper_model_name="openai/whisper-large-v3"):
-        super(SpeechEmotionModel, self).__init__()
-        self.num_classes = num_classes
-        self.num_transformer_layers = num_transformer_layers
 
-        # 设置设备和数据类型
-        self.device = "cuda:7" if torch.cuda.is_available() else "cpu"
-        self.torch_dtype = torch.float16 if torch.cuda.is_available() else torch.float32
+class SpeechEmotionClassifier(nn.Module):
+    """Speech Emotion Classification model using Whisper encoder and Transformer layers."""
 
-        # 加载 Whisper v3 Encoder 和处理器
-        self.whisper_encoder = AutoModelForSpeechSeq2Seq.from_pretrained(
-            whisper_model_name, torch_dtype=self.torch_dtype, low_cpu_mem_usage=True, use_safetensors=True
-        ).to(self.device)
-        self.processor = AutoProcessor.from_pretrained(whisper_model_name)
+    def __init__(self, model_name='openai/whisper-large-v3', class_num=8):
+        super(SpeechEmotionClassifier, self).__init__()
+        self.whisper_model, self.feature_extractor = self.load_pretrained_whisper(model_name)
+        self.whisper_encoder = self.whisper_model.encoder  # Use the encoder part of the Whisper model
+        self.dimention = self.whisper_encoder.config.d_model
+        self.nhead = self.whisper_encoder.config.nhead
+        self.class_num = class_num 
 
-        whisper_d_model = self.whisper_encoder.config.hidden_size
+        # Define additional transformer layers
+        transformer_layer = nn.TransformerEncoderLayer(d_model=self.dimention, nhead=self.nhead)
+        self.additional_transformer_layers = nn.TransformerEncoder(transformer_layer, num_layers=2)
 
-        # 可选的维度匹配层
-        self.dim_match_layer = nn.Linear(whisper_d_model, d_model) if whisper_d_model != d_model else None
-
-        # Transformer 层
-        if num_transformer_layers > 0:
-            transformer_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead)
-            self.transformer = nn.TransformerEncoder(transformer_layer, num_layers=num_transformer_layers)
-        else:
-            self.transformer = None
-
-        # 输出层
-        self.output_layer = nn.Linear(d_model, num_classes)
+        # Linear projection layer for classification (8 classes)
+        self.classifier = nn.Linear(self.dimention, 8)
+    
+    def load_pretrained_whisper(self, model_name):
+        """Load the pre-trained Whisper model."""
+        model = WhisperModel.from_pretrained(model_name)
+        feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
+        return model, feature_extractor
+    
+    def process_input(self, input_audio):
+        """Process the input features to the model."""
+        inputs = self.feature_extractor(input_audio, return_tensors="pt")
+        input_features = inputs.input_features
+        return input_features
 
     def forward(self, input_audio):
-        # Assuming input_audio is shaped [batch_size, 1, audio_length]
-        # Squeeze to remove the channel dimension
-        if input_audio.ndim == 3:
-            input_audio = input_audio.squeeze(1)
-        # 处理输入音频
-        processed_input = self.processor(input_audio, return_tensors="pt", sampling_rate=16000).input_values.to(self.device)
-        print(processed_input.shape)
-        exit(0)
-        # 从 Whisper Encoder 获取特征表示
-        whisper_output = self.whisper_encoder(processed_input).last_hidden_state
+        """Forward pass for the model."""
+        print(input_audio.shape)
+        input_features = self.process_input(input_audio)
+        
+        # Pass input through the Whisper encoder
+        encoder_output = self.whisper_encoder(input_features).last_hidden_state
 
-        # 维度匹配（如有必要）
-        if self.dim_match_layer:
-            whisper_output = self.dim_match_layer(whisper_output)
+        # Pass output through additional Transformer layers
+        transformer_output = self.additional_transformer_layers(encoder_output)
 
-        # 通过 Transformer 层处理（如有）
-        if self.transformer:
-            whisper_output = self.transformer(whisper_output)
+        # Classification using the output of the last transformer layer
+        logits = self.classifier(transformer_output[:, 0, :])
+        return logits
 
-        # 特征聚合（平均池化）
-        pooled_features = whisper_output.mean(dim=1)
+def main():
+    """Main function to instantiate and test the model."""
+    # Instantiate the model
+    model = SpeechEmotionClassifier(model_name="openai/whisper-large-v3", class_num=8)
 
-        # 映射到情感类别
-        output = self.output_layer(pooled_features)
-        return output
+    input_aduio = torch.rand(16000,4)  # Replace with actual input features
 
+    # Forward pass
+    logits = model(input_aduio)
+    print(logits)
 
-if __name__=="__main__":
-    model = SpeechEmotionModel(num_classes=8, num_transformer_layers=1, d_model=512, nhead=8, whisper_model_name="openai/whisper-large-v3")
-    print(model)
-    input_audio = torch.randn(4, 1, 16000)
-    output = model(input_audio)
-    print(output.shape)
+if __name__ == "__main__":
+    main()
