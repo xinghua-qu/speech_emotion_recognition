@@ -281,3 +281,22 @@
 2023-12-04 09:44:00,011 DEBUG   SenderThread:70156 [sender.py:send_request():407] send_request: stop_status
 2023-12-04 09:44:00,025 INFO    Thread-12 :70156 [dir_watcher.py:_on_file_modified():288] file/dir modified: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_093711-tjpxd9a5/files/wandb-summary.json
 2023-12-04 09:44:01,151 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:06,155 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:11,166 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:11,938 DEBUG   SenderThread:70156 [sender.py:send():380] send: stats
+2023-12-04 09:44:15,009 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 09:44:15,010 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-04 09:44:15,011 DEBUG   SenderThread:70156 [sender.py:send_request():407] send_request: stop_status
+2023-12-04 09:44:17,127 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:22,128 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:27,129 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:30,010 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 09:44:30,011 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-04 09:44:30,011 DEBUG   SenderThread:70156 [sender.py:send_request():407] send_request: stop_status
+2023-12-04 09:44:33,117 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:38,118 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:41,942 DEBUG   SenderThread:70156 [sender.py:send():380] send: stats
+2023-12-04 09:44:43,944 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 09:44:45,011 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 09:44:45,011 DEBUG   HandlerThread:70156 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-04 09:44:45,012 DEBUG   SenderThread:70156 [sender.py:send_request():407] send_request: stop_status
