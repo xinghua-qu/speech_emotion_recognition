@@ -1,87 +1,72 @@
-import os
-# import torchaudio
-from torch.utils.data import Dataset, DataLoader
 import librosa
 import numpy as np
+import os
+from pathlib import Path
 import torch
-from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import Dataset, DataLoader
+from transformers import AutoFeatureExtractor
 
 class RAVDESSDataset(Dataset):
-    def __init__(self, root_dir):
-        self.root_dir = root_dir
-        self.filepaths = []
-        self._build_file_list()
+    """Dataset class for RAVDESS dataset."""
+
+    SR = 16000  # Sample rate
+    MAX_LENGTH = 3000  # Max length of waveform
+
+    def __init__(self, root_dir: str, model_name='openai/whisper-large-v3'):
+        self.root_dir = Path(root_dir)
+        self.filepaths = self._build_file_list()
+        self.model_name = model_name
+        self.processor = self._load_pretrained_processor()
+
+    def _load_pretrained_processor(self):
+        """Load the pre-trained Whisper model."""
+        return AutoFeatureExtractor.from_pretrained(self.model_name)
 
     def _build_file_list(self):
-        # Iterate through the actor folders
+        """Build a list of file paths for the audio files."""
+        filepaths = []
         for actor_id in range(1, 24):
-            actor_folder = os.path.join(self.root_dir, f"Actor_{str(actor_id).zfill(2)}")
-            if os.path.exists(actor_folder):
-                # List all files in the actor folder
-                for file in os.listdir(actor_folder):
-                    if file.endswith(".wav"):
-                        self.filepaths.append(os.path.join(actor_folder, file))
+            actor_folder = self.root_dir / f"Actor_{str(actor_id).zfill(2)}"
+            if actor_folder.exists():
+                for file in actor_folder.iterdir():
+                    if file.suffix == ".wav":
+                        filepaths.append(file)
+        return filepaths
 
     def __len__(self):
         return len(self.filepaths)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int):
         filepath = self.filepaths[idx]
         try:
-            waveform, sample_rate = librosa.load(filepath, sr=None)
-            if sample_rate != 16000:
-                waveform = librosa.resample(waveform, orig_sr=sample_rate, target_sr=16000) 
-        except Exception as e:
+            waveform, _ = librosa.load(filepath, sr=self.SR)
+            waveform = self._pad_trim_waveform(waveform)
+            feature = self.processor(waveform, sampling_rate=self.SR, return_tensors="pt").input_features
+        except IOError as e:
             print(f"Error loading {filepath}: {e}")
             raise
-        label = self.extract_label_from_filename(filepath)
-        return torch.from_numpy(waveform), sample_rate, label
+        label = self._extract_label_from_filename(filepath)
+        return feature, label
 
-    def pad_trim_waveform(self, waveform, max_length):
-        if len(waveform) > max_length:
-            waveform = waveform[:max_length]
-        elif len(waveform) < max_length:
-            padding = max_length - len(waveform)
-            waveform = np.pad(waveform, (0, padding), 'constant')
-        return waveform
+    def _pad_trim_waveform(self, waveform):
+        """Pad or trim the waveform to the maximum length."""
+        if len(waveform) > self.MAX_LENGTH:
+            return waveform[:self.MAX_LENGTH]
+        return np.pad(waveform, (0, self.MAX_LENGTH - len(waveform)), 'constant')
 
-    def extract_label_from_filename(self, filepath):
-        # Implement logic to extract the label from the filename
-        filename = os.path.basename(filepath)
-        parts = filename.split('-')
-        emotion_code = int(parts[2])
+    def _extract_label_from_filename(self, filepath: Path):
+        """Extract the label from the filename."""
+        filename = filepath.name
+        emotion_code = int(filename.split('-')[2])
         return emotion_code
 
-
-def custom_collate_fn(batch):
-    waveforms, sample_rates, labels = zip(*batch)
-
-    # 计算每个音频的长度
-    lengths = [len(waveform) for waveform in waveforms]
-
-    # 将所有音频填充到批处理中最长的音频长度
-    waveforms_padded = pad_sequence(waveforms, batch_first=True, padding_value=0)
-
-    # 创建一个 mask，用于在后续处理中标识原始音频长度和填充部分
-    max_length = waveforms_padded.shape[1]
-    masks = [torch.zeros(max_length, dtype=torch.bool) for _ in range(len(waveforms))]
-    for i, length in enumerate(lengths):
-        masks[i][:length] = 1
-
-    masks = torch.stack(masks, dim=0)
-
-    sample_rates = torch.tensor(sample_rates)
-    labels = torch.tensor(labels)
-
-    return waveforms_padded, sample_rates, labels, masks
-
 if __name__ == "__main__":
-    # Usage
-    dataset = RAVDESSDataset('/home/ec2-user/teddy_workspace/data/speech_emotion/Speech')
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=True, collate_fn=custom_collate_fn)
+    # Test dataset usage
+    dataset = RAVDESSDataset('/home/ec2-user/teddy_workspace/data/speech_emotion/Speech', model_name='openai/whisper-large-v3')
+    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
 
     for batch in dataloader:
-        waveforms, sample_rates, labels, masks= batch
+        features, labels= batch
         # Process batches here
-        print(waveforms.shape, sample_rates.shape, labels, masks.shape)
+        print(features.shape, labels)
         break
