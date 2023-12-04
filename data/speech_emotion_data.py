@@ -1,22 +1,25 @@
 import librosa
 import numpy as np
 import os
-from pathlib import Path
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
 from transformers import AutoFeatureExtractor
+from pathlib import Path
+import joblib  # For efficient caching
 
 class RAVDESSDataset(Dataset):
-    """Dataset class for RAVDESS dataset."""
+    """Dataset class for RAVDESS dataset with improved data I/O."""
 
     SR = 16000  # Sample rate
     MAX_LENGTH = 3000  # Max length of waveform
+    CACHE_DIR = Path("cache")  # Directory to store cached files
 
     def __init__(self, root_dir: str, model_name='openai/whisper-large-v3'):
         self.root_dir = Path(root_dir)
         self.filepaths = self._build_file_list()
         self.model_name = model_name
         self.processor = self._load_pretrained_processor()
+        self.CACHE_DIR.mkdir(exist_ok=True)  # Create cache directory if it doesn't exist
 
     def _load_pretrained_processor(self):
         """Load the pre-trained Whisper model."""
@@ -38,6 +41,20 @@ class RAVDESSDataset(Dataset):
 
     def __getitem__(self, idx: int):
         filepath = self.filepaths[idx]
+        cache_file = self.CACHE_DIR / f"{filepath.stem}.pkl"
+
+        if cache_file.exists():
+            # Load preprocessed data from cache
+            feature, label = joblib.load(cache_file)
+        else:
+            # Process and cache the data
+            feature, label = self._process_file(filepath)
+            joblib.dump((feature, label), cache_file)
+
+        return feature, label
+
+    def _process_file(self, filepath):
+        """Process the audio file."""
         try:
             waveform, _ = librosa.load(filepath, sr=self.SR)
             waveform = self._pad_trim_waveform(waveform)
@@ -61,14 +78,3 @@ class RAVDESSDataset(Dataset):
         emotion_code = int(filename.split('-')[2])
         emotion_code = int(emotion_code - 1)
         return emotion_code
-
-if __name__ == "__main__":
-    # Test dataset usage
-    dataset = RAVDESSDataset('/home/ec2-user/teddy_workspace/data/speech_emotion/Speech', model_name='openai/whisper-large-v3')
-    dataloader = DataLoader(dataset, batch_size=4, shuffle=True)
-
-    for batch in dataloader:
-        features, labels= batch
-        # Process batches here
-        print(features.shape, labels)
-        break
