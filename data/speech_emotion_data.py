@@ -29,6 +29,8 @@ class RAVDESSDataset(Dataset):
         filepath = self.filepaths[idx]
         try:
             waveform, sample_rate = librosa.load(filepath, sr=None)
+            if sample_rate != 16000:
+                waveform = librosa.resample(waveform, orig_sr=sample_rate, target_sr=16000) 
         except Exception as e:
             print(f"Error loading {filepath}: {e}")
             raise
