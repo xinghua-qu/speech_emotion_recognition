@@ -59,6 +59,7 @@ class RAVDESSDataset(Dataset):
         """Extract the label from the filename."""
         filename = filepath.name
         emotion_code = int(filename.split('-')[2])
+        emotion_code = int(emotion_code - 1)
         return emotion_code
 
 if __name__ == "__main__":
