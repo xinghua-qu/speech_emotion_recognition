@@ -23,23 +23,23 @@ def cleanup():
     dist.destroy_process_group()
 
 
-def train_model(model, dataloader, optimizer, criterion, scaler, rank, config, epoch):
+def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
     """Train the model for one epoch."""
     model.train()
     for i, (data, target) in enumerate(dataloader):
         data, target = data.to(rank), target.to(rank)
 
         optimizer.zero_grad()
+        
+        # Compute output and loss
+        outputs = model(data)
+        loss = criterion(outputs, target)
 
-        with autocast():
-            outputs = model(data)
-            loss = criterion(outputs, target)
+        # Backpropagation
+        loss.backward()
+        optimizer.step()
 
-        scaler.scale(loss).backward()
-        scaler.step(optimizer)
-        scaler.update()
-
-        # Change here: Log every 1000 steps instead of every config.log_interval steps
+        # Logging
         if rank == 0 and i % config.log_interval == 0:
             wandb.log({"loss": loss.item(), "epoch": epoch, "batch": i})
 
@@ -92,12 +92,12 @@ def main(rank, world_size, config_file):
     model.to(rank)  # Move model to the correct device
     model = nn.parallel.DistributedDataParallel(model, device_ids=[rank], find_unused_parameters=True)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
     criterion = nn.CrossEntropyLoss()
-    scaler = GradScaler()
+    # scaler = GradScaler()
 
     for epoch in range(config.epochs):
-        train_model(model, train_loader, optimizer, criterion, scaler, rank, config, epoch)
+        train_model(model, train_loader, optimizer, criterion, rank, config, epoch)
         validate_model(model, val_loader, criterion, rank, config, epoch, 'val')
 
     validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
@@ -109,5 +109,4 @@ def main(rank, world_size, config_file):
 if __name__ == "__main__":
     world_size = torch.cuda.device_count() 
     config_file = "config/base.yaml"
-    # main(0, world_size, config_file)
     torch.multiprocessing.spawn(main, args=(world_size, config_file), nprocs=world_size)
