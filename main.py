@@ -41,7 +41,7 @@ def train_model(model, dataloader, optimizer, criterion, scaler, rank, config, e
         scaler.update()
 
         # Change here: Log every 1000 steps instead of every config.log_interval steps
-        if i % 1000 == 0:
+        if rank == 0 and i % config.log_interval == 0:
             wandb.log({"loss": loss.item(), "epoch": epoch, "batch": i})
 
 def validate_model(model, dataloader, criterion, rank, config, epoch):
@@ -64,13 +64,15 @@ def validate_model(model, dataloader, criterion, rank, config, epoch):
 
     avg_loss = total_loss / len(dataloader)
     accuracy = total_correct / total_samples
-    wandb.log({"val_loss": avg_loss, "val_accuracy": accuracy, "epoch": epoch})
+    if rank == 0:
+        wandb.log({"val_loss": avg_loss, "val_accuracy": accuracy, "epoch": epoch})
 
 def main(rank, world_size, config_file):
     setup(rank, world_size)
 
-    # Login to wandb with your API key
-    wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")  # Replace with your actual API key
+    if rank == 0:
+        wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
+        wandb.init(project="speech-emotion-classifier")
 
     config = read_config(config_file)
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
@@ -92,20 +94,19 @@ def main(rank, world_size, config_file):
     criterion = nn.CrossEntropyLoss()
     scaler = GradScaler()
 
-    wandb.init(project="speech-emotion-classifier")
-
     for epoch in range(config.epochs):
         train_model(model, train_loader, optimizer, criterion, scaler, rank, config, epoch)
         validate_model(model, val_loader, criterion, rank, config, epoch)
 
     test_loss, test_accuracy = validate_model(model, test_loader, criterion, rank, config, epoch)
-    wandb.log({"test_loss": test_loss, "val_accuracy": test_accuracy, "epoch": epoch})
+    if rank == 0:
+        wandb.log({"test_loss": test_loss, "val_accuracy": test_accuracy, "epoch": epoch})
+        wandb.finish()
     cleanup()
-
-    wandb.finish()
 
 
 if __name__ == "__main__":
     world_size = torch.cuda.device_count() 
     config_file = "config/base.yaml"
+    # main(0, world_size, config_file)
     torch.multiprocessing.spawn(main, args=(world_size, config_file), nprocs=world_size)
