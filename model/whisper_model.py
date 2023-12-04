@@ -3,7 +3,6 @@ from torch import nn
 from transformers import WhisperModel, AutoFeatureExtractor
 from torch.nn.functional import softmax
 
-
 class SpeechEmotionClassifier(nn.Module):
     """Speech Emotion Classification model using Whisper encoder and Transformer layers."""
 
@@ -25,23 +24,15 @@ class SpeechEmotionClassifier(nn.Module):
         self.additional_transformer_layers = nn.TransformerEncoder(transformer_layer, num_layers=self.num_layers)
 
         # Linear projection layer for classification (8 classes)
-        self.classifier = nn.Linear(self.dimention, 8)
+        self.classifier = nn.Linear(self.dimention, self.class_num)
     
     def load_pretrained_whisper(self, model_name):
         """Load the pre-trained Whisper model."""
         model = WhisperModel.from_pretrained(model_name)
         return model
-    
-    def process_input(self, input_audio):
-        """Process the input features to the model."""
-        inputs = self.feature_extractor(input_audio, return_tensors="pt")
-        input_features = inputs.input_features
-        return input_features
 
     def forward(self, input_features):
         """Forward pass for the model."""
-        # input_features = self.process_input(input_audio)
-        
         # Pass input through the Whisper encoder
         with torch.no_grad():
             encoder_output = self.whisper_encoder(input_features).last_hidden_state

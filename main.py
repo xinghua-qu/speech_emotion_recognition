@@ -33,7 +33,6 @@ def train_model(model, dataloader, optimizer, criterion, scaler, rank, config, e
 
         with autocast():
             outputs = model(data)
-            print(outputs.shape, target.shape)
             loss = criterion(outputs, target)
 
         scaler.scale(loss).backward()
@@ -88,7 +87,7 @@ def main(rank, world_size, config_file):
     
     model = SpeechEmotionClassifier(config.model_name, config.class_num)
     model.to(rank)  # Move model to the correct device
-    model = nn.parallel.DistributedDataParallel(model, device_ids=[rank])
+    model = nn.parallel.DistributedDataParallel(model, device_ids=[rank], find_unused_parameters=True)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr)
     criterion = nn.CrossEntropyLoss()
