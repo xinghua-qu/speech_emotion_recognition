@@ -1,0 +1,189 @@
+2023-12-04 08:28:59,714 INFO    StreamThr :1512 [internal.py:wandb_internal():86] W&B internal server running at pid: 1512, started at: 2023-12-04 08:28:59.713854
+2023-12-04 08:28:59,715 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status
+2023-12-04 08:28:59,716 INFO    WriterThread:1512 [datastore.py:open_for_write():85] open: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/run-jddkc9wr.wandb
+2023-12-04 08:28:59,717 DEBUG   SenderThread:1512 [sender.py:send():380] send: header
+2023-12-04 08:28:59,719 DEBUG   SenderThread:1512 [sender.py:send():380] send: run
+2023-12-04 08:28:59,976 INFO    SenderThread:1512 [dir_watcher.py:__init__():211] watching files in: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files
+2023-12-04 08:28:59,976 INFO    SenderThread:1512 [sender.py:_start_run_threads():1124] run started: jddkc9wr with start time 1701678539.713533
+2023-12-04 08:28:59,983 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: check_version
+2023-12-04 08:28:59,983 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: check_version
+2023-12-04 08:29:00,036 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: run_start
+2023-12-04 08:29:00,050 DEBUG   HandlerThread:1512 [system_info.py:__init__():32] System info init
+2023-12-04 08:29:00,050 DEBUG   HandlerThread:1512 [system_info.py:__init__():47] System info init done
+2023-12-04 08:29:00,050 INFO    HandlerThread:1512 [system_monitor.py:start():194] Starting system monitor
+2023-12-04 08:29:00,050 INFO    SystemMonitor:1512 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2023-12-04 08:29:00,050 INFO    HandlerThread:1512 [system_monitor.py:probe():214] Collecting system info
+2023-12-04 08:29:00,051 INFO    SystemMonitor:1512 [interfaces.py:start():190] Started cpu monitoring
+2023-12-04 08:29:00,051 INFO    SystemMonitor:1512 [interfaces.py:start():190] Started disk monitoring
+2023-12-04 08:29:00,051 INFO    SystemMonitor:1512 [interfaces.py:start():190] Started gpu monitoring
+2023-12-04 08:29:00,052 INFO    SystemMonitor:1512 [interfaces.py:start():190] Started memory monitoring
+2023-12-04 08:29:00,052 INFO    SystemMonitor:1512 [interfaces.py:start():190] Started network monitoring
+2023-12-04 08:29:00,126 DEBUG   HandlerThread:1512 [system_info.py:probe():196] Probing system
+2023-12-04 08:29:00,129 DEBUG   HandlerThread:1512 [system_info.py:_probe_git():181] Probing git
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_info.py:_probe_git():189] Probing git done
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_info.py:probe():244] Probing system done
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_monitor.py:probe():223] {'os': 'Linux-5.10.179-166.674.amzn2.x86_64-x86_64-with-glibc2.26', 'python': '3.10.13', 'heartbeatAt': '2023-12-04T08:29:00.127019', 'startedAt': '2023-12-04T08:28:59.710054', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/data_2/teddy/code/speech_emotion_recognition/main.py', 'codePathLocal': 'main.py', 'codePath': 'main.py', 'git': {'remote': 'https://github.com/xinghua-qu/speech_emotion_recognition', 'commit': '2432643a1528b9cf06ccecfe8884e4929055d60a'}, 'email': 'teddy.qu@shanda.com', 'root': '/data_2/teddy/code/speech_emotion_recognition', 'host': 'ai-planning-p4de-02', 'username': 'ec2-user', 'executable': '/opt/conda/envs/speech-emotion/bin/python', 'cpu_count': 48, 'cpu_count_logical': 96, 'cpu_freq': {'current': 2968.6046354166665, 'min': 0.0, 'max': 0.0}, 'cpu_freq_per_core': [{'current': 2213.532, 'min': 0.0, 'max': 0.0}, {'current': 2275.941, 'min': 0.0, 'max': 0.0}, {'current': 2605.677, 'min': 0.0, 'max': 0.0}, {'current': 3340.324, 'min': 0.0, 'max': 0.0}, {'current': 2510.678, 'min': 0.0, 'max': 0.0}, {'current': 2024.202, 'min': 0.0, 'max': 0.0}, {'current': 2203.766, 'min': 0.0, 'max': 0.0}, {'current': 2188.308, 'min': 0.0, 'max': 0.0}, {'current': 2202.458, 'min': 0.0, 'max': 0.0}, {'current': 2146.63, 'min': 0.0, 'max': 0.0}, {'current': 2539.929, 'min': 0.0, 'max': 0.0}, {'current': 2439.881, 'min': 0.0, 'max': 0.0}, {'current': 2135.008, 'min': 0.0, 'max': 0.0}, {'current': 2610.024, 'min': 0.0, 'max': 0.0}, {'current': 3077.569, 'min': 0.0, 'max': 0.0}, {'current': 2208.447, 'min': 0.0, 'max': 0.0}, {'current': 2562.816, 'min': 0.0, 'max': 0.0}, {'current': 2587.823, 'min': 0.0, 'max': 0.0}, {'current': 2113.998, 'min': 0.0, 'max': 0.0}, {'current': 2232.412, 'min': 0.0, 'max': 0.0}, {'current': 2571.644, 'min': 0.0, 'max': 0.0}, {'current': 3393.34, 'min': 0.0, 'max': 0.0}, {'current': 2428.454, 'min': 0.0, 'max': 0.0}, {'current': 2177.376, 'min': 0.0, 'max': 0.0}, {'current': 3277.157, 'min': 0.0, 'max': 0.0}, {'current': 3227.618, 'min': 0.0, 'max': 0.0}, {'current': 3242.71, 'min': 0.0, 'max': 0.0}, {'current': 3599.717, 'min': 0.0, 'max': 0.0}, {'current': 3177.295, 'min': 0.0, 'max': 0.0}, {'current': 3384.025, 'min': 0.0, 'max': 0.0}, {'current': 3251.264, 'min': 0.0, 'max': 0.0}, {'current': 3249.883, 'min': 0.0, 'max': 0.0}, {'current': 3224.476, 'min': 0.0, 'max': 0.0}, {'current': 3626.029, 'min': 0.0, 'max': 0.0}, {'current': 3218.452, 'min': 0.0, 'max': 0.0}, {'current': 3553.12, 'min': 0.0, 'max': 0.0}, {'current': 3590.029, 'min': 0.0, 'max': 0.0}, {'current': 3188.996, 'min': 0.0, 'max': 0.0}, {'current': 3580.88, 'min': 0.0, 'max': 0.0}, {'current': 3198.293, 'min': 0.0, 'max': 0.0}, {'current': 3571.589, 'min': 0.0, 'max': 0.0}, {'current': 3601.816, 'min': 0.0, 'max': 0.0}, {'current': 3599.946, 'min': 0.0, 'max': 0.0}, {'current': 3597.729, 'min': 0.0, 'max': 0.0}, {'current': 3597.785, 'min': 0.0, 'max': 0.0}, {'current': 3599.999, 'min': 0.0, 'max': 0.0}, {'current': 3273.985, 'min': 0.0, 'max': 0.0}, {'current': 3315.84, 'min': 0.0, 'max': 0.0}, {'current': 2418.069, 'min': 0.0, 'max': 0.0}, {'current': 2488.507, 'min': 0.0, 'max': 0.0}, {'current': 2177.406, 'min': 0.0, 'max': 0.0}, {'current': 2465.659, 'min': 0.0, 'max': 0.0}, {'current': 2374.457, 'min': 0.0, 'max': 0.0}, {'current': 2799.582, 'min': 0.0, 'max': 0.0}, {'current': 2388.152, 'min': 0.0, 'max': 0.0}, {'current': 2218.929, 'min': 0.0, 'max': 0.0}, {'current': 2247.876, 'min': 0.0, 'max': 0.0}, {'current': 2418.625, 'min': 0.0, 'max': 0.0}, {'current': 2486.582, 'min': 0.0, 'max': 0.0}, {'current': 2685.405, 'min': 0.0, 'max': 0.0}, {'current': 2389.326, 'min': 0.0, 'max': 0.0}, {'current': 2108.097, 'min': 0.0, 'max': 0.0}, {'current': 2339.549, 'min': 0.0, 'max': 0.0}, {'current': 3019.8, 'min': 0.0, 'max': 0.0}, {'current': 2525.236, 'min': 0.0, 'max': 0.0}, {'current': 2464.466, 'min': 0.0, 'max': 0.0}, {'current': 2083.484, 'min': 0.0, 'max': 0.0}, {'current': 2157.035, 'min': 0.0, 'max': 0.0}, {'current': 2278.431, 'min': 0.0, 'max': 0.0}, {'current': 2770.742, 'min': 0.0, 'max': 0.0}, {'current': 3528.862, 'min': 0.0, 'max': 0.0}, {'current': 2181.649, 'min': 0.0, 'max': 0.0}, {'current': 3570.428, 'min': 0.0, 'max': 0.0}, {'current': 3572.585, 'min': 0.0, 'max': 0.0}, {'current': 3576.836, 'min': 0.0, 'max': 0.0}, {'current': 3609.721, 'min': 0.0, 'max': 0.0}, {'current': 3571.531, 'min': 0.0, 'max': 0.0}, {'current': 3589.728, 'min': 0.0, 'max': 0.0}, {'current': 3559.879, 'min': 0.0, 'max': 0.0}, {'current': 3591.455, 'min': 0.0, 'max': 0.0}, {'current': 3561.633, 'min': 0.0, 'max': 0.0}, {'current': 3599.935, 'min': 0.0, 'max': 0.0}, {'current': 3589.945, 'min': 0.0, 'max': 0.0}, {'current': 3588.088, 'min': 0.0, 'max': 0.0}, {'current': 3587.126, 'min': 0.0, 'max': 0.0}, {'current': 3553.472, 'min': 0.0, 'max': 0.0}, {'current': 3420.099, 'min': 0.0, 'max': 0.0}, {'current': 3588.732, 'min': 0.0, 'max': 0.0}, {'current': 3609.507, 'min': 0.0, 'max': 0.0}, {'current': 3555.805, 'min': 0.0, 'max': 0.0}, {'current': 3599.444, 'min': 0.0, 'max': 0.0}, {'current': 3604.463, 'min': 0.0, 'max': 0.0}, {'current': 3595.036, 'min': 0.0, 'max': 0.0}, {'current': 3594.577, 'min': 0.0, 'max': 0.0}, {'current': 3472.348, 'min': 0.0, 'max': 0.0}, {'current': 3497.074, 'min': 0.0, 'max': 0.0}], 'disk': {'/': {'total': 499.9882621765137, 'used': 412.67033767700195}}, 'gpu': 'NVIDIA A100-SXM4-80GB', 'gpu_count': 8, 'gpu_devices': [{'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}, {'name': 'NVIDIA A100-SXM4-80GB', 'memory_total': 85899345920}], 'memory': {'total': 1121.806079864502}}
+2023-12-04 08:29:00,135 INFO    HandlerThread:1512 [system_monitor.py:probe():224] Finished collecting system info
+2023-12-04 08:29:00,135 INFO    HandlerThread:1512 [system_monitor.py:probe():227] Publishing system info
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_info.py:_save_pip():68] Saving pip packages done
+2023-12-04 08:29:00,135 DEBUG   HandlerThread:1512 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-12-04 08:29:00,977 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_created():271] file/dir created: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/conda-environment.yaml
+2023-12-04 08:29:00,978 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_created():271] file/dir created: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/requirements.txt
+2023-12-04 08:29:03,262 DEBUG   HandlerThread:1512 [system_info.py:_save_conda():87] Saving conda packages done
+2023-12-04 08:29:03,263 INFO    HandlerThread:1512 [system_monitor.py:probe():229] Finished publishing system info
+2023-12-04 08:29:03,268 DEBUG   SenderThread:1512 [sender.py:send():380] send: files
+2023-12-04 08:29:03,268 INFO    SenderThread:1512 [sender.py:_save_file():1380] saving file wandb-metadata.json with policy now
+2023-12-04 08:29:03,277 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-04 08:29:03,277 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: stop_status
+2023-12-04 08:29:03,279 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 08:29:03,466 DEBUG   SenderThread:1512 [sender.py:send():380] send: telemetry
+2023-12-04 08:29:03,605 INFO    wandb-upload_0:1512 [upload_job.py:push():131] Uploaded file /tmp/tmpm45z5k2cwandb/6id7lsza-wandb-metadata.json
+2023-12-04 08:29:03,905 DEBUG   SenderThread:1512 [sender.py:send():380] send: telemetry
+2023-12-04 08:29:03,977 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_modified():288] file/dir modified: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/conda-environment.yaml
+2023-12-04 08:29:03,977 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_created():271] file/dir created: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-metadata.json
+2023-12-04 08:29:04,905 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:09,906 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:14,907 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:18,275 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: stop_status
+2023-12-04 08:29:18,275 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: stop_status
+2023-12-04 08:29:18,276 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 08:29:20,428 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:22,809 DEBUG   SenderThread:1512 [sender.py:send():380] send: exit
+2023-12-04 08:29:22,810 INFO    SenderThread:1512 [sender.py:send_exit():585] handling exit code: 1
+2023-12-04 08:29:22,810 INFO    SenderThread:1512 [sender.py:send_exit():587] handling runtime: 22
+2023-12-04 08:29:22,811 INFO    SenderThread:1512 [sender.py:_save_file():1380] saving file wandb-summary.json with policy end
+2023-12-04 08:29:22,811 INFO    SenderThread:1512 [sender.py:send_exit():593] send defer
+2023-12-04 08:29:22,811 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:22,812 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 0
+2023-12-04 08:29:22,812 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:22,812 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 0
+2023-12-04 08:29:22,812 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 1
+2023-12-04 08:29:22,812 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:22,812 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 1
+2023-12-04 08:29:22,812 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:22,812 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 1
+2023-12-04 08:29:22,812 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 2
+2023-12-04 08:29:22,812 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:22,812 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 2
+2023-12-04 08:29:22,812 INFO    HandlerThread:1512 [system_monitor.py:finish():203] Stopping system monitor
+2023-12-04 08:29:22,813 DEBUG   SystemMonitor:1512 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2023-12-04 08:29:22,813 DEBUG   SystemMonitor:1512 [system_monitor.py:_start():179] Finished system metrics aggregation loop
+2023-12-04 08:29:22,813 INFO    HandlerThread:1512 [interfaces.py:finish():202] Joined cpu monitor
+2023-12-04 08:29:22,813 DEBUG   SystemMonitor:1512 [system_monitor.py:_start():183] Publishing last batch of metrics
+2023-12-04 08:29:22,814 INFO    HandlerThread:1512 [interfaces.py:finish():202] Joined disk monitor
+2023-12-04 08:29:22,982 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_created():271] file/dir created: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-summary.json
+2023-12-04 08:29:26,800 INFO    HandlerThread:1512 [interfaces.py:finish():202] Joined gpu monitor
+2023-12-04 08:29:26,801 INFO    HandlerThread:1512 [interfaces.py:finish():202] Joined memory monitor
+2023-12-04 08:29:26,801 INFO    HandlerThread:1512 [interfaces.py:finish():202] Joined network monitor
+2023-12-04 08:29:26,801 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: poll_exit
+2023-12-04 08:29:26,801 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:26,801 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,802 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 2
+2023-12-04 08:29:26,802 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 3
+2023-12-04 08:29:26,802 DEBUG   SenderThread:1512 [sender.py:send():380] send: stats
+2023-12-04 08:29:26,802 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,802 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: poll_exit
+2023-12-04 08:29:26,803 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 3
+2023-12-04 08:29:26,804 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,804 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 3
+2023-12-04 08:29:26,804 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 4
+2023-12-04 08:29:26,804 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,804 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 4
+2023-12-04 08:29:26,804 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,804 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 4
+2023-12-04 08:29:26,804 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 5
+2023-12-04 08:29:26,804 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,804 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 5
+2023-12-04 08:29:26,804 DEBUG   SenderThread:1512 [sender.py:send():380] send: summary
+2023-12-04 08:29:26,805 INFO    SenderThread:1512 [sender.py:_save_file():1380] saving file wandb-summary.json with policy end
+2023-12-04 08:29:26,805 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,805 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 5
+2023-12-04 08:29:26,805 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 6
+2023-12-04 08:29:26,805 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,805 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 6
+2023-12-04 08:29:26,805 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,805 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 6
+2023-12-04 08:29:26,809 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: status_report
+2023-12-04 08:29:26,902 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 7
+2023-12-04 08:29:26,902 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,902 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 7
+2023-12-04 08:29:26,903 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,903 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 7
+2023-12-04 08:29:26,903 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 8
+2023-12-04 08:29:26,903 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,903 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 8
+2023-12-04 08:29:26,903 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:26,903 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 8
+2023-12-04 08:29:26,903 INFO    SenderThread:1512 [job_builder.py:build():298] Attempting to build job artifact
+2023-12-04 08:29:26,903 INFO    SenderThread:1512 [job_builder.py:_get_source_type():428] is repo sourced job
+2023-12-04 08:29:26,917 INFO    SenderThread:1512 [job_builder.py:build():404] adding wandb-job metadata file
+2023-12-04 08:29:26,919 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 9
+2023-12-04 08:29:26,919 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:26,919 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 9
+2023-12-04 08:29:26,920 DEBUG   SenderThread:1512 [sender.py:send():380] send: artifact
+2023-12-04 08:29:26,983 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_modified():288] file/dir modified: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-summary.json
+2023-12-04 08:29:26,983 INFO    Thread-12 :1512 [dir_watcher.py:_on_file_modified():288] file/dir modified: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/config.yaml
+2023-12-04 08:29:27,368 INFO    SenderThread:1512 [sender.py:send_artifact():1458] sent artifact job-https___github.com_xinghua-qu_speech_emotion_recognition_main.py - {'id': 'QXJ0aWZhY3Q6NjU2NjgxNjg0', 'state': 'COMMITTED', 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjEyMDY1MzU1MA==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6NjU2NjgxNjg0', 'versionIndex': 6}}}
+2023-12-04 08:29:27,368 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:27,368 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 9
+2023-12-04 08:29:27,368 INFO    SenderThread:1512 [dir_watcher.py:finish():358] shutting down directory watcher
+2023-12-04 08:29:27,984 INFO    SenderThread:1512 [dir_watcher.py:finish():388] scan: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files
+2023-12-04 08:29:27,984 INFO    SenderThread:1512 [dir_watcher.py:finish():402] scan save: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/conda-environment.yaml conda-environment.yaml
+2023-12-04 08:29:27,984 INFO    SenderThread:1512 [dir_watcher.py:finish():402] scan save: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-metadata.json wandb-metadata.json
+2023-12-04 08:29:27,984 INFO    SenderThread:1512 [dir_watcher.py:finish():402] scan save: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/requirements.txt requirements.txt
+2023-12-04 08:29:27,986 INFO    SenderThread:1512 [dir_watcher.py:finish():402] scan save: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-summary.json wandb-summary.json
+2023-12-04 08:29:27,988 INFO    SenderThread:1512 [dir_watcher.py:finish():402] scan save: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/config.yaml config.yaml
+2023-12-04 08:29:27,989 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 10
+2023-12-04 08:29:27,990 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:27,990 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 10
+2023-12-04 08:29:27,992 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:27,992 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 10
+2023-12-04 08:29:27,992 INFO    SenderThread:1512 [file_pusher.py:finish():175] shutting down file pusher
+2023-12-04 08:29:28,209 INFO    wandb-upload_1:1512 [upload_job.py:push():131] Uploaded file /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/requirements.txt
+2023-12-04 08:29:28,252 INFO    wandb-upload_0:1512 [upload_job.py:push():131] Uploaded file /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/conda-environment.yaml
+2023-12-04 08:29:28,268 INFO    wandb-upload_3:1512 [upload_job.py:push():131] Uploaded file /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/config.yaml
+2023-12-04 08:29:28,285 INFO    wandb-upload_2:1512 [upload_job.py:push():131] Uploaded file /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/files/wandb-summary.json
+2023-12-04 08:29:28,485 INFO    Thread-11 (_thread_body):1512 [sender.py:transition_state():613] send defer: 11
+2023-12-04 08:29:28,486 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:28,486 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 11
+2023-12-04 08:29:28,486 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:28,486 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 11
+2023-12-04 08:29:28,486 INFO    SenderThread:1512 [file_pusher.py:join():181] waiting for file pusher
+2023-12-04 08:29:28,486 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 12
+2023-12-04 08:29:28,486 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:28,487 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 12
+2023-12-04 08:29:28,487 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:28,487 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 12
+2023-12-04 08:29:28,487 INFO    SenderThread:1512 [file_stream.py:finish():595] file stream finish called
+2023-12-04 08:29:28,760 INFO    SenderThread:1512 [file_stream.py:finish():599] file stream finish is done
+2023-12-04 08:29:28,760 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 13
+2023-12-04 08:29:28,760 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:28,760 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 13
+2023-12-04 08:29:28,760 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:28,760 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 13
+2023-12-04 08:29:28,760 INFO    SenderThread:1512 [sender.py:transition_state():613] send defer: 14
+2023-12-04 08:29:28,761 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: defer
+2023-12-04 08:29:28,761 DEBUG   SenderThread:1512 [sender.py:send():380] send: final
+2023-12-04 08:29:28,761 INFO    HandlerThread:1512 [handler.py:handle_request_defer():172] handle defer: 14
+2023-12-04 08:29:28,761 DEBUG   SenderThread:1512 [sender.py:send():380] send: footer
+2023-12-04 08:29:28,761 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: defer
+2023-12-04 08:29:28,761 INFO    SenderThread:1512 [sender.py:send_request_defer():609] handle sender defer: 14
+2023-12-04 08:29:28,762 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: poll_exit
+2023-12-04 08:29:28,762 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: poll_exit
+2023-12-04 08:29:28,762 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: server_info
+2023-12-04 08:29:28,762 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: server_info
+2023-12-04 08:29:28,764 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: get_summary
+2023-12-04 08:29:28,764 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: sampled_history
+2023-12-04 08:29:28,764 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: internal_messages
+2023-12-04 08:29:28,764 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: job_info
+2023-12-04 08:29:28,840 DEBUG   SenderThread:1512 [sender.py:send_request():407] send_request: job_info
+2023-12-04 08:29:28,840 INFO    MainThread:1512 [wandb_run.py:_footer_history_summary_info():3760] rendering history
+2023-12-04 08:29:28,841 INFO    MainThread:1512 [wandb_run.py:_footer_history_summary_info():3792] rendering summary
+2023-12-04 08:29:28,841 INFO    MainThread:1512 [wandb_run.py:_footer_sync_info():3719] logging synced files
+2023-12-04 08:29:28,841 DEBUG   HandlerThread:1512 [handler.py:handle_request():146] handle_request: shutdown
+2023-12-04 08:29:28,841 INFO    HandlerThread:1512 [handler.py:finish():866] shutting down handler
+2023-12-04 08:29:29,765 INFO    WriterThread:1512 [datastore.py:close():294] close: /data_2/teddy/code/speech_emotion_recognition/wandb/run-20231204_082859-jddkc9wr/run-jddkc9wr.wandb
+2023-12-04 08:29:29,841 INFO    SenderThread:1512 [sender.py:finish():1536] shutting down sender
+2023-12-04 08:29:29,841 INFO    SenderThread:1512 [file_pusher.py:finish():175] shutting down file pusher
+2023-12-04 08:29:29,841 INFO    SenderThread:1512 [file_pusher.py:join():181] waiting for file pusher

@@ -42,6 +42,7 @@ class RAVDESSDataset(Dataset):
             waveform, _ = librosa.load(filepath, sr=self.SR)
             waveform = self._pad_trim_waveform(waveform)
             feature = self.processor(waveform, sampling_rate=self.SR, return_tensors="pt").input_features
+            feature = torch.squeeze(feature, dim=0)
         except IOError as e:
             print(f"Error loading {filepath}: {e}")
             raise
