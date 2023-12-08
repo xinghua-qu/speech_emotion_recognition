@@ -14,6 +14,7 @@ class SpeechEmotionClassifier(nn.Module):
         self.nhead = 8
         self.num_layers = 2
         self.class_num = class_num 
+        self.set_trainable(trainable=True)  # Train the Whisper encoder
 
         # Define additional transformer layers
         transformer_layer = nn.TransformerEncoderLayer(
@@ -30,6 +31,12 @@ class SpeechEmotionClassifier(nn.Module):
         """Load the pre-trained Whisper model."""
         model = WhisperModel.from_pretrained(model_name)
         return model
+    
+    def set_trainable(self, trainable=True):
+        """Set whether the model is trainable."""
+        for param in self.whisper_encoder.parameters():
+            param.requires_grad = trainable
+
 
     def forward(self, input_features):
         """Forward pass for the model."""

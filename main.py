@@ -1,3 +1,9 @@
+"""This module contains the main code for training a Speech Emotion Classifier.
+
+Author: Xinghua QU (quxinghua17@gmail.com)
+"""
+
+import os
 import torch
 import torch.nn as nn
 import torch.distributed as dist
@@ -7,16 +13,15 @@ import wandb
 
 from model import SpeechEmotionClassifier
 from data import RAVDESSDataset
-from utils import read_config, split_dataset  # Assuming split_dataset is a utility function you have for splitting the dataset
-import os
-# os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+from utils import read_config, split_dataset
 
 
 def setup(rank, world_size):
     """Initializes the distributed backend."""
-    os.environ['MASTER_ADDR'] = 'localhost'  # or the IP address of the master node
-    os.environ['MASTER_PORT'] = '12355'      # any free port
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
+
 
 def cleanup():
     """Clean up distributed training setup."""
@@ -26,7 +31,7 @@ def cleanup():
 def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
     """Train the model for one epoch."""
     model.train()
-    for i, (data, target) in enumerate(dataloader):
+    for i, (_, data, target) in enumerate(dataloader):
         data, target = data.to(rank), target.to(rank)
 
         optimizer.zero_grad()
@@ -38,9 +43,10 @@ def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
         # Backpropagation
         loss.backward()
         optimizer.step()
-
+        
         # Logging
         if rank == 0 and i % config.log_interval == 0:
+            print(f"Epoch: {epoch}, steps: {i}, loss: {loss.item()}")
             wandb.log({"loss": loss.item(), "epoch": epoch, "batch": i})
 
 def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
@@ -51,7 +57,7 @@ def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
     total_samples = 0
 
     with torch.no_grad():
-        for i, (data, target) in enumerate(dataloader):
+        for i, (_, data, target) in enumerate(dataloader):
             data, target = data.to(rank), target.to(rank)
             outputs = model(data)
             loss = criterion(outputs, target)
@@ -74,7 +80,8 @@ def main(rank, world_size, config_file):
 
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
-        wandb.init(project="speech-emotion-classifier")
+        run_name = f"{config.model_name}_{config.learning_rate}"
+        wandb.init(project="speech-emotion-whisper", name=run_name)
 
     config = read_config(config_file)
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
@@ -101,12 +108,17 @@ def main(rank, world_size, config_file):
         validate_model(model, val_loader, criterion, rank, config, epoch, 'val')
 
     validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
+    
+    # Save the trained model
     if rank == 0:
+        os.makedirs('./results', exist_ok=True)  # Create directory if it doesn't exist
+        torch.save(model.state_dict(), './results/trained_model.pth')
         wandb.finish()
     cleanup()
 
 
 if __name__ == "__main__":
-    world_size = torch.cuda.device_count() 
-    config_file = "config/base.yaml"
+    # world_size = torch.cuda.device_count() 
+    world_size = 1
+    config_file = "config/whisper_large_v3.yaml"
     torch.multiprocessing.spawn(main, args=(world_size, config_file), nprocs=world_size)

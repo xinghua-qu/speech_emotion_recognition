@@ -18,6 +18,7 @@ class RAVDESSDataset(Dataset):
     CACHE_DIR = Path("cache")  # Directory to store cached files
 
     def __init__(self, root_dir: str, model_name='openai/whisper-large-v3'):
+        """Initialize the dataset."""
         self.root_dir = Path(root_dir)
         self.filepaths = self._build_file_list()
         self.model_name = model_name
@@ -26,6 +27,7 @@ class RAVDESSDataset(Dataset):
         self.clear_cache()
         
     def clear_cache(self):
+        """Clear the cache directory."""
         if RAVDESSDataset.CACHE_DIR.exists():
             for filename in RAVDESSDataset.CACHE_DIR.iterdir():
                 try:
@@ -49,9 +51,11 @@ class RAVDESSDataset(Dataset):
         return filepaths
 
     def __len__(self):
+        """Return the total number of files."""
         return len(self.filepaths)
 
     def __getitem__(self, idx: int):
+        """Return the waveform, feature, and label for a file."""
         filepath = self.filepaths[idx]
         cache_file = self.CACHE_DIR / f"{filepath.stem}.pkl"
 
