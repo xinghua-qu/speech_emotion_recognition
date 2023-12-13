@@ -3,6 +3,7 @@ __pycache__/
 cache/
 model/__pycache__/
 data/__pycache__/
+results/ 
 *.py[cod]
 *$py.class
 
