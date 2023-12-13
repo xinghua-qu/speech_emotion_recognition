@@ -77,13 +77,13 @@ def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
 
 def main(rank, world_size, config_file):
     setup(rank, world_size)
+    config = read_config(config_file)
 
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
-        run_name = f"{config.model_name}_{config.learning_rate}"
+        run_name = f"{config.model_name}_{config.lr}"
         wandb.init(project="speech-emotion-whisper", name=run_name)
 
-    config = read_config(config_file)
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
     train_dataset, val_dataset, test_dataset = split_dataset(full_dataset, config)
 
@@ -106,9 +106,9 @@ def main(rank, world_size, config_file):
     for epoch in range(config.epochs):
         train_model(model, train_loader, optimizer, criterion, rank, config, epoch)
         validate_model(model, val_loader, criterion, rank, config, epoch, 'val')
-
-    validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
+        validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
     
+    validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
     # Save the trained model
     if rank == 0:
         os.makedirs('./results', exist_ok=True)  # Create directory if it doesn't exist
@@ -118,7 +118,7 @@ def main(rank, world_size, config_file):
 
 
 if __name__ == "__main__":
-    # world_size = torch.cuda.device_count() 
-    world_size = 1
+    world_size = torch.cuda.device_count() 
+    # world_size = 1
     config_file = "config/whisper_large_v3.yaml"
     torch.multiprocessing.spawn(main, args=(world_size, config_file), nprocs=world_size)

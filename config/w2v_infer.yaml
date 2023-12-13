@@ -1,0 +1,11 @@
+model_name: "openai/whisper-large"
+class_num: 8
+data_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech"
+batch_size: 4
+num_workers: 4
+epochs: 10000
+lr: 0.0001
+weight_decay: 0.000001
+save_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech/weights"
+log_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech/logs"
+log_interval: 20
