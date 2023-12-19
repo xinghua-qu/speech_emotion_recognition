@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 cache/
+wandb/
 model/__pycache__/
 data/__pycache__/
 results/ 

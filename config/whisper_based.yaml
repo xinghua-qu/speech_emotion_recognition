@@ -3,7 +3,7 @@ class_num: 8
 data_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech"
 batch_size: 32
 num_workers: 4
-epochs: 100000
+epochs: 10
 lr: 0.00005
 weight_decay: 0.000001
 save_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech/weights"

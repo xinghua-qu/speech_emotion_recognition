@@ -10,7 +10,7 @@ import torch.distributed as dist
 from torch.cuda.amp import GradScaler, autocast
 from torch.utils.data.distributed import DistributedSampler
 import wandb
-
+import argparse
 from model import SpeechEmotionClassifier
 from data import RAVDESSDataset
 from utils import read_config, split_dataset
@@ -75,14 +75,19 @@ def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
         wandb.log({"test_loss": avg_loss, "test_accuracy": accuracy, "epoch": epoch})
 
 
-def main(rank, world_size, config_file):
+def main(rank, world_size, config_file, args):
     setup(rank, world_size)
     config = read_config(config_file)
+    config.model_name = args.model_name
+    
+    # Set the GPU ID if world_size is 1
+    if world_size == 1:
+        torch.cuda.set_device(args.gpu_id)
 
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
-        run_name = f"{config.model_name}_{config.lr}"
-        wandb.init(project="speech-emotion-whisper", name=run_name)
+        run_name = f"shanda_speech_emotion_{config.model_name}_{config.lr}"
+        wandb.init(project="shanda_speech-emotion-whisper", name=run_name)
 
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
     train_dataset, val_dataset, test_dataset = split_dataset(full_dataset, config)
@@ -112,13 +117,17 @@ def main(rank, world_size, config_file):
     # Save the trained model
     if rank == 0:
         os.makedirs('./results', exist_ok=True)  # Create directory if it doesn't exist
-        torch.save(model.state_dict(), './results/trained_model.pth')
+        torch.save(model.state_dict(), f'./results/whisper_emotion_{config.model_name}_shanda.pth')
         wandb.finish()
     cleanup()
 
 
 if __name__ == "__main__":
-    world_size = torch.cuda.device_count() 
-    # world_size = 1
-    config_file = "config/whisper_large_v3.yaml"
-    torch.multiprocessing.spawn(main, args=(world_size, config_file), nprocs=world_size)
+    parser = argparse.ArgumentParser(description='Train a Speech Emotion Classifier.')
+    parser.add_argument('--model_name', default='openai/whisper-large-v3', type=str, required=True, help='Name of the model to train.')
+    parser.add_argument('--gpu_id', default=0, type=int, required=True, help='ID of the GPU to use for training.')
+    args = parser.parse_args()
+    # world_size = torch.cuda.device_count() 
+    world_size = 1
+    config_file = "config/whisper_based.yaml"
+    torch.multiprocessing.spawn(main, args=(world_size, config_file, args), nprocs=world_size)

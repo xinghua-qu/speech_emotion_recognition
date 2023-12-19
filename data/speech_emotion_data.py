@@ -55,6 +55,9 @@ class RAVDESSDataset(Dataset):
         filepath = self.filepaths[idx]
         cache_file = self.CACHE_DIR / f"{filepath.stem}.pkl"
 
+        if not os.path.exists(self.CACHE_DIR):
+            os.makedirs(self.CACHE_DIR)
+
         if cache_file.exists():
             # Load preprocessed data from cache
             waveform, feature, label = joblib.load(cache_file)
