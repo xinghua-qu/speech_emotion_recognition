@@ -39,6 +39,11 @@ def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
         # Compute output and loss
         outputs = model(data)
         loss = criterion(outputs, target)
+        
+        # Compute accuracy
+        _, predicted = torch.max(outputs.data, 1)
+        total_correct += (predicted == target).sum().item()
+        total_samples += target.size(0)
 
         # Backpropagation
         loss.backward()
@@ -46,8 +51,9 @@ def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
         
         # Logging
         if rank == 0 and i % config.log_interval == 0:
-            print(f"Epoch: {epoch}, steps: {i}, loss: {loss.item()}")
-            wandb.log({"loss": loss.item(), "epoch": epoch, "batch": i})
+            accuracy = total_correct / total_samples
+            print(f"Epoch: {epoch}, steps: {i}, loss: {loss.item()}, accuracy: {accuracy}")
+            wandb.log({"loss": loss.item(), "accuracy": accuracy, "epoch": epoch, "batch": i})
 
 def validate_model(model, dataloader, criterion, rank, config, epoch, datatype):
     """Validate the model for one epoch."""
@@ -86,7 +92,7 @@ def main(rank, world_size, config_file, args):
 
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
-        run_name = f"shanda_speech_emotion_{config.model_name}_{config.lr}"
+        run_name = f"shanda_speech_emotion_{config.model_name}_lr_{config.lr}_epochs_{config.epochs}"
         wandb.init(project="shanda_speech-emotion-whisper", name=run_name)
 
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
@@ -116,8 +122,9 @@ def main(rank, world_size, config_file, args):
     validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
     # Save the trained model
     if rank == 0:
-        os.makedirs('./results', exist_ok=True)  # Create directory if it doesn't exist
-        torch.save(model.state_dict(), f'./results/whisper_emotion_{config.model_name}_shanda.pth')
+        model_dir = f'./results/whisper_emotion_epoch_{config.epochs}_{config.model_name}'
+        os.makedirs(model_dir, exist_ok=True)  # Create directory if it doesn't exist
+        torch.save(model.state_dict(), f'{model_dir}/shanda.pth')
         wandb.finish()
     cleanup()
 
