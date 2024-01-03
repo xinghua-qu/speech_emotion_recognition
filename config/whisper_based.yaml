@@ -1,7 +1,7 @@
 model_name: "openai/whisper-large-v3"
 class_num: 8
-data_path: "/home/ec2-user/teddy_workspace/data/speech_emotion/Speech"
-batch_size: 32
+data_path: "/data_3/teddy_research/dataset/speech_emotion"
+batch_size: 8
 num_workers: 4
 epochs: 20
 lr: 0.000025

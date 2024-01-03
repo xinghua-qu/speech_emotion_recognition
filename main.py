@@ -31,6 +31,8 @@ def cleanup():
 def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
     """Train the model for one epoch."""
     model.train()
+    total_correct = 0
+    total_samples = 0
     for i, (_, data, target) in enumerate(dataloader):
         data, target = data.to(rank), target.to(rank)
 
@@ -85,6 +87,7 @@ def main(rank, world_size, config_file, args):
     setup(rank, world_size)
     config = read_config(config_file)
     config.model_name = args.model_name
+    config.epochs = args.epoch
     
     # Set the GPU ID if world_size is 1
     if world_size == 1:
@@ -93,7 +96,7 @@ def main(rank, world_size, config_file, args):
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
         run_name = f"shanda_speech_emotion_{config.model_name}_lr_{config.lr}_epochs_{config.epochs}"
-        wandb.init(project="shanda_speech-emotion-whisper", name=run_name)
+        wandb.init(project="test-shanda_speech-emotion-whisper", name=run_name)
 
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
     train_dataset, val_dataset, test_dataset = split_dataset(full_dataset, config)
@@ -132,9 +135,9 @@ def main(rank, world_size, config_file, args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train a Speech Emotion Classifier.')
     parser.add_argument('--model_name', default='openai/whisper-large-v3', type=str, required=True, help='Name of the model to train.')
-    parser.add_argument('--gpu_id', default=0, type=int, required=True, help='ID of the GPU to use for training.')
+    parser.add_argument('--epoch', default=60, type=int, help='epoch for training.')
     args = parser.parse_args()
-    # world_size = torch.cuda.device_count() 
-    world_size = 1
+    world_size = torch.cuda.device_count() 
+    # world_size = 1
     config_file = "config/whisper_based.yaml"
     torch.multiprocessing.spawn(main, args=(world_size, config_file, args), nprocs=world_size)
