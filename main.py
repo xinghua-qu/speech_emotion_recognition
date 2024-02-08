@@ -37,11 +37,11 @@ def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
         data, target = data.to(rank), target.to(rank)
 
         optimizer.zero_grad()
-        
+
         # Compute output and loss
         outputs = model(data)
         loss = criterion(outputs, target)
-        
+
         # Compute accuracy
         _, predicted = torch.max(outputs.data, 1)
         total_correct += (predicted == target).sum().item()
@@ -50,7 +50,7 @@ def train_model(model, dataloader, optimizer, criterion, rank, config, epoch):
         # Backpropagation
         loss.backward()
         optimizer.step()
-        
+
         # Logging
         if rank == 0 and i % config.log_interval == 0:
             accuracy = total_correct / total_samples
@@ -88,7 +88,7 @@ def main(rank, world_size, config_file, args):
     config = read_config(config_file)
     config.model_name = args.model_name
     config.epochs = args.epoch
-    
+
     # Set the GPU ID if world_size is 1
     if world_size == 1:
         torch.cuda.set_device(args.gpu_id)
@@ -96,7 +96,7 @@ def main(rank, world_size, config_file, args):
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
         run_name = f"shanda_speech_emotion_{config.model_name}_lr_{config.lr}_epochs_{config.epochs}"
-        wandb.init(project="test-shanda_speech-emotion-whisper", name=run_name)
+        wandb.init(project="shanda_speech-emotion-whisper-08022024", name=run_name)
 
     full_dataset = RAVDESSDataset(config.data_path, config.model_name)
     train_dataset, val_dataset, test_dataset = split_dataset(full_dataset, config)
@@ -108,7 +108,7 @@ def main(rank, world_size, config_file, args):
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batch_size, shuffle=False, sampler=train_sampler)
     val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batch_size, shuffle=False, sampler=val_sampler)
     test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batch_size, shuffle=False, sampler=test_sampler)
-    
+
     model = SpeechEmotionClassifier(config.model_name, config.class_num)
     model.to(rank)  # Move model to the correct device
     model = nn.parallel.DistributedDataParallel(model, device_ids=[rank], find_unused_parameters=True)
@@ -121,7 +121,7 @@ def main(rank, world_size, config_file, args):
         train_model(model, train_loader, optimizer, criterion, rank, config, epoch)
         validate_model(model, val_loader, criterion, rank, config, epoch, 'val')
         validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
-    
+
     validate_model(model, test_loader, criterion, rank, config, epoch, 'test')
     # Save the trained model
     if rank == 0:
@@ -137,7 +137,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_name', default='openai/whisper-large-v3', type=str, required=True, help='Name of the model to train.')
     parser.add_argument('--epoch', default=60, type=int, help='epoch for training.')
     args = parser.parse_args()
-    world_size = torch.cuda.device_count() 
+    world_size = torch.cuda.device_count()
     # world_size = 1
     config_file = "config/whisper_based.yaml"
     torch.multiprocessing.spawn(main, args=(world_size, config_file, args), nprocs=world_size)
