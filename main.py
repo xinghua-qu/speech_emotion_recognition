@@ -91,7 +91,7 @@ def main(rank, world_size, config_file, args):
 
     # Set the GPU ID if world_size is 1
     if world_size == 1:
-        torch.cuda.set_device(args.gpu_id)
+        torch.cuda.set_device(0)
 
     if rank == 0:
         wandb.login(key="6c2d72a2a160656cfd8ff15575bd8ef2019edacc")
@@ -138,6 +138,6 @@ if __name__ == "__main__":
     parser.add_argument('--epoch', default=60, type=int, help='epoch for training.')
     args = parser.parse_args()
     world_size = torch.cuda.device_count()
-    # world_size = 1
+    world_size = 1
     config_file = "config/whisper_based.yaml"
     torch.multiprocessing.spawn(main, args=(world_size, config_file, args), nprocs=world_size)
